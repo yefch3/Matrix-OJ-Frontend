@@ -62,12 +62,12 @@ const doMenuClick = (key: string) => {
   });
 };
 
-setTimeout(() => {
-  store.dispatch("user/getLoginUser", {
-    userName: "Fangchen Ye",
-    userRole: ROLE_ENUM.ADMIN,
-  });
-}, 2000);
+// setTimeout(() => {
+//   store.dispatch("user/getLoginUser", {
+//     userName: "Fangchen Ye",
+//     userRole: ROLE_ENUM.ADMIN,
+//   });
+// }, 2000);
 </script>
 
 <style scoped>
