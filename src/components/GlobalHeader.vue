@@ -79,6 +79,8 @@ const doMenuClick = (key: string) => {
 .title {
   color: #444;
   margin-left: 16px;
+  margin-right: 16px;
+  text-align: center;
 }
 
 .logo {

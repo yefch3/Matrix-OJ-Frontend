@@ -1,6 +1,6 @@
 <template>
   <div id="userLoginView">
-    <h1>Login</h1>
+    <h1>Log in</h1>
     <a-form :model="form" :style="{ width: '600px' }" @submit="handleSubmit">
       <a-form-item
         field="userAccount"
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from "vue";
+import { reactive } from "vue";
 import { UserControllerService, UserLoginRequest } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
@@ -42,7 +42,7 @@ import { useStore } from "vuex";
 const form = reactive({
   userAccount: "",
   userPassword: "",
-  // rememberMe: false,
+  rememberMe: false,
 }) as UserLoginRequest;
 const router = useRouter();
 const store = useStore();

@@ -1,6 +1,12 @@
 <template>
   <div id="userLayout">
     <a-layout style="min-height: 100vh">
+      <a-layout-header class="header">
+        <a-space>
+          <img src="../assets/logo.png" class="logo" />
+          <div class="title">OJ System</div>
+        </a-space>
+      </a-layout-header>
       <a-layout-content class="content">
         <router-view />
       </a-layout-content>
@@ -18,6 +24,7 @@
 }
 
 #userLayout .header {
+  background: #aaa;
 }
 
 #userLayout .content {
@@ -34,6 +41,17 @@
   left: 0;
   right: 0;
   text-align: center;
+}
+
+#userLayout .logo {
+  height: 64px;
+  width: 96px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+#userLayout .title {
+  color: #444;
+  margin-left: 16px;
 }
 </style>
 
