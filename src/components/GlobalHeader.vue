@@ -35,7 +35,6 @@ import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import roleCheck from "@/access/roleCheck";
-import ROLE_ENUM from "@/access/roleEnum";
 
 const router = useRouter();
 const selectedKeys = ref(["/"]);

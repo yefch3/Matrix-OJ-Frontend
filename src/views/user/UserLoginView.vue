@@ -50,8 +50,8 @@ const store = useStore();
 const handleSubmit = async () => {
   const res = await UserControllerService.userLoginUsingPost(form);
   if (res.code === 0) {
+    alert("Login success" + JSON.stringify(res.data));
     await router.push({ path: "/", replace: true });
-    // alert("Login success" + JSON.stringify(res.data));
     await store.dispatch("/user/getLoginUser", res.data);
   } else {
     message.error("Login failed: " + res.message);

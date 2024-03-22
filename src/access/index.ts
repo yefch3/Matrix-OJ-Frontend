@@ -4,8 +4,10 @@ import store from "@/store";
 import roleCheck from "@/access/roleCheck";
 
 router.beforeEach(async (to, from, next) => {
-  console.log("loginUser", store.state.user.loginUser);
+  await store.dispatch("user/getLoginUser");
   const loginUser = store.state.user.loginUser;
+  console.log("loginUser", loginUser);
+
   // 未登录，自动登录
   if (!loginUser || !loginUser.userRole) {
     await store.dispatch("user/getLoginUser");
@@ -24,4 +26,5 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   next();
+  return;
 });
