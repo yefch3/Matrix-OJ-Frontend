@@ -7,15 +7,30 @@ router.beforeEach(async (to, from, next) => {
   await store.dispatch("user/getLoginUser");
   const loginUser = store.state.user.loginUser;
   console.log("loginUser", loginUser);
+  // 如果是登录页，且已登录，跳转首页
+  if (
+    to.path === "/user/login" &&
+    loginUser.userRole &&
+    loginUser.userRole !== ROLE_ENUM.NOT_LOGIN
+  ) {
+    // console.log("已登陆，跳转首页");
+    next("/");
+    return;
+  }
 
   // 未登录，自动登录
-  if (!loginUser || !loginUser.userRole) {
-    await store.dispatch("user/getLoginUser");
-  }
+  // if (!loginUser || !loginUser.userRole) {
+  //   await store.dispatch("user/getLoginUser");
+  // }
   const needRole = (to.meta?.access ?? ROLE_ENUM.NOT_LOGIN) as string;
   if (needRole !== ROLE_ENUM.NOT_LOGIN) {
     // 未登录，跳转登录页，并重定向到目标页
-    if (!loginUser || !loginUser.userRole) {
+    if (
+      !loginUser ||
+      !loginUser.userRole ||
+      loginUser.userRole === ROLE_ENUM.NOT_LOGIN
+    ) {
+      // console.log("未登录，跳转登录页");
       next(`/user/login?redirect=${to.fullPath}`);
       return;
     }

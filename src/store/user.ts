@@ -6,13 +6,13 @@ import { UserControllerService } from "../../generated";
 export default {
   namespaced: true,
   state: () => ({
-    loginUser: {
-      userName: "Sign in",
-    },
+    // loginUser: {
+    //   userName: "Sign in",
+    // },
   }),
   actions: {
     // todo login
-    async getLoginUser({ commit, state }, payload) {
+    async getLoginUser({ commit, state }) {
       const res = await UserControllerService.getLoginUserUsingGet();
       if (res.code === 0) {
         commit("updateUser", res.data);
