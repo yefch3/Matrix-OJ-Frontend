@@ -22,8 +22,24 @@
       </a-menu>
     </a-col>
     <a-col flex="100px">
+      <a-dropdown @submit="handleLogout">
+        <a-button>{{ loginUser?.userName ?? "Sign in" }}</a-button>
+        <template #content>
+          <a- html-type="submit">Log out</a->
+        </template>
+      </a-dropdown>
       <div>
-        {{ loginUser?.userName ?? "Sign in" }}
+        <!-- 使用 Arco Design 的按钮组件 -->
+        <a-button @click="handleLogout">
+          {{ "test" }}
+        </a-button>
+        <!-- 使用 Arco Design 的下拉菜单组件 -->
+        <a-dropdown v-model="handleLogout">
+          <!-- 下拉菜单内容 -->
+          <template #content>
+            <a-dropdown-button @click="handleLogout">Logout</a-dropdown-button>
+          </template>
+        </a-dropdown>
       </div>
     </a-col>
   </a-row>
@@ -35,6 +51,7 @@ import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import roleCheck from "@/access/roleCheck";
+import { UserControllerService } from "../../generated";
 
 const router = useRouter();
 const selectedKeys = ref(["/"]);
@@ -61,12 +78,11 @@ const doMenuClick = (key: string) => {
   });
 };
 
-// setTimeout(() => {
-//   store.dispatch("user/getLoginUser", {
-//     userName: "Fangchen Ye",
-//     userRole: ROLE_ENUM.ADMIN,
-//   });
-// }, 2000);
+const handleLogout = async () => {
+  console.log("logout");
+  await store.dispatch("user/userLogout");
+  await router.push({ path: "/", replace: true });
+};
 </script>
 
 <style scoped>

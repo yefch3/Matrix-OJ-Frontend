@@ -23,6 +23,15 @@ export default {
         });
       }
     },
+    // todo logout
+    async userLogout({ commit }) {
+      const res = await UserControllerService.userLogoutUsingPost();
+      if (res.code === 0) {
+        commit("updateUser", {
+          userRole: ROLE_ENUM.NOT_LOGIN,
+        });
+      }
+    },
   },
   mutations: {
     updateUser(state: { loginUser: any }, payload: any) {

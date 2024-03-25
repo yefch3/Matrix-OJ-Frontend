@@ -1,7 +1,7 @@
 <template>
   <div id="userLoginView">
     <h1>Log in</h1>
-    <a-form :model="form" :style="{ width: '600px' }" @submit="handleSubmit">
+    <a-form :model="form" :style="{ width: '600px' }" @submit="handleLogin">
       <a-form-item
         field="userAccount"
         tooltip="Please enter username"
@@ -47,12 +47,12 @@ const form = reactive({
 const router = useRouter();
 const store = useStore();
 
-const handleSubmit = async () => {
+const handleLogin = async () => {
   const res = await UserControllerService.userLoginUsingPost(form);
   if (res.code === 0) {
     alert("Login success" + JSON.stringify(res.data));
+    await store.dispatch("user/getLoginUser", res.data);
     await router.push({ path: "/", replace: true });
-    await store.dispatch("/user/getLoginUser", res.data);
   } else {
     message.error("Login failed: " + res.message);
   }
