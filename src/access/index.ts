@@ -7,18 +7,6 @@ router.beforeEach(async (to, from, next) => {
   await store.dispatch("user/getLoginUser");
   const loginUser = store.state.user.loginUser;
   console.log("loginUser", loginUser);
-  // 如果是用户页，且未登录，跳转登录页
-  if (
-    to.path === "/user" &&
-    (!loginUser ||
-      !loginUser.userRole ||
-      loginUser.userRole === ROLE_ENUM.NOT_LOGIN)
-  ) {
-    // console.log("未登录，跳转登录页");
-    next(`/user/login?redirect=${to.fullPath}`);
-    return;
-  }
-
   // 如果是登录页，且已登录，跳转首页
   if (
     to.path === "/user/login" &&

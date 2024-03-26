@@ -6,9 +6,10 @@ import { UserControllerService } from "../../generated";
 export default {
   namespaced: true,
   state: () => ({
-    // loginUser: {
-    //   userName: "Sign in",
-    // },
+    loginUser: {
+      userName: null,
+      userRole: ROLE_ENUM.NOT_LOGIN,
+    },
   }),
   actions: {
     // todo login
@@ -28,6 +29,7 @@ export default {
       const res = await UserControllerService.userLogoutUsingPost();
       if (res.code === 0) {
         commit("updateUser", {
+          userName: null,
           userRole: ROLE_ENUM.NOT_LOGIN,
         });
       }

@@ -1,7 +1,12 @@
 <template>
   <div id="userLoginView">
     <h1>Log in</h1>
-    <a-form :model="form" :style="{ width: '600px' }" @submit="handleLogin">
+    <a-form
+      :model="form"
+      :style="{ width: '400px' }"
+      @submit="handleLogin"
+      auto-label-width
+    >
       <a-form-item
         field="userAccount"
         tooltip="Please enter username"
@@ -50,7 +55,7 @@ const store = useStore();
 const handleLogin = async () => {
   const res = await UserControllerService.userLoginUsingPost(form);
   if (res.code === 0) {
-    alert("Login success" + JSON.stringify(res.data));
+    // alert("Login success" + JSON.stringify(res.data));
     await store.dispatch("user/getLoginUser", res.data);
     await router.push({ path: "/", replace: true });
   } else {

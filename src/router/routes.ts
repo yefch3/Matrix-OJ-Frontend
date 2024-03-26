@@ -14,17 +14,24 @@ export const routes: Array<RouteRecordRaw> = [
     component: UserLayout,
     meta: {
       hideInMenu: true,
+      access: ROLE_ENUM.USER,
     },
     children: [
       {
         path: "/user/login",
         name: "Login",
         component: UserLoginView,
+        meta: {
+          access: ROLE_ENUM.NOT_LOGIN,
+        },
       },
       {
         path: "/user/register",
         name: "Register",
         component: UserRegisterView,
+        meta: {
+          access: ROLE_ENUM.NOT_LOGIN,
+        },
       },
     ],
   },
@@ -32,6 +39,9 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "Problems",
     component: HomeView,
+    meta: {
+      access: ROLE_ENUM.NOT_LOGIN,
+    },
   },
   {
     path: "/no-auth",
@@ -39,6 +49,9 @@ export const routes: Array<RouteRecordRaw> = [
     component: NoAuthView,
     meta: {
       hideInMenu: true,
+      meta: {
+        access: ROLE_ENUM.NOT_LOGIN,
+      },
     },
   },
   {
