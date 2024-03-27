@@ -3,9 +3,9 @@
     The access control enum is used to define the access control for
  */
 const ROLE_ENUM = {
-  NOT_LOGIN: "NOT_LOGIN",
-  USER: "USER",
-  ADMIN: "ADMIN",
+  NOT_LOGIN: "not_login",
+  USER: "user",
+  ADMIN: "admin",
 };
 
 export default ROLE_ENUM;
