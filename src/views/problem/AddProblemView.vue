@@ -40,33 +40,38 @@
     </a-form-item>
     <a-form-item field="judgeConfig" label="Limit">
       <a-row>
-        <a-col :span="18">
+        <a-col :span="6">
           <a-form :model="form" :layout="layout">
-            <a-form-item field="memory" label="Memory">
+            <a-form-item field="memory" label="Memory (MB)">
               <a-input-number
                 v-model="form.judgeConfig.memoryLimit"
-                allow-clear
                 :min="0"
+                class="config-input"
               >
-                <template #append>MB</template>
               </a-input-number>
             </a-form-item>
-            <a-form-item field="stack" label="Stack">
+          </a-form>
+        </a-col>
+        <a-col :span="6">
+          <a-form :model="form" :layout="layout">
+            <a-form-item field="stack" label="Stack (MB)">
               <a-input-number
                 v-model="form.judgeConfig.stackLimit"
-                allow-clear
                 :min="0"
+                class="config-input"
               >
-                <template #append>MB</template>
               </a-input-number>
             </a-form-item>
-            <a-form-item field="time" label="Time">
+          </a-form>
+        </a-col>
+        <a-col :span="6">
+          <a-form :model="form" :layout="layout">
+            <a-form-item field="time" label="Time (ms)">
               <a-input-number
                 v-model="form.judgeConfig.timeLimit"
-                allow-clear
                 :min="0"
+                class="config-input"
               >
-                <template #append>ms</template>
               </a-input-number>
             </a-form-item>
           </a-form>
@@ -109,4 +114,8 @@ const form = reactive({
 const layout = ref("vertical");
 </script>
 
-<style scoped></style>
+<style scoped>
+.config-input {
+  margin-right: 10px;
+}
+</style>
