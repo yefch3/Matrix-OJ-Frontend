@@ -1,5 +1,5 @@
 <template>
-  <div id="code-editor" ref="codeEditorRef" style="min-height: 400px" />
+  <div id="code-editor" ref="codeEditorRef" />
 </template>
 
 <script setup lang="ts">
@@ -54,4 +54,9 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+#code-editor {
+  width: 100%;
+  height: 100px;
+}
+</style>
