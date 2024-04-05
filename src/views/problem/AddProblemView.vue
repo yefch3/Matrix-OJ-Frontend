@@ -38,40 +38,38 @@
         <a-option>Hard</a-option>
       </a-select>
     </a-form-item>
-    <a-form-item field="judgeConfig" label="Judge Config">
+    <a-form-item field="judgeConfig" label="Limit">
       <a-row>
-        <a-col :span="8">
-          <a-form-item field="memoryLimit" label="Memory Limit">
-            <a-input-number
-              v-model="form.judgeConfig.memoryLimit"
-              allow-clea
-              :min="0"
-            >
-              <template #append>MB</template>
-            </a-input-number>
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item field="stackLimit" label="Stack Limit">
-            <a-input-number
-              v-model="form.judgeConfig.stackLimit"
-              allow-clear
-              :min="0"
-            >
-              <template #append>MB</template>
-            </a-input-number>
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item field="timeLimit" label="Time Limit">
-            <a-input-number
-              v-model="form.judgeConfig.timeLimit"
-              allow-clear
-              :min="0"
-            >
-              <template #append>ms</template>
-            </a-input-number>
-          </a-form-item>
+        <a-col :span="18">
+          <a-form :model="form" :layout="layout">
+            <a-form-item field="memory" label="Memory">
+              <a-input-number
+                v-model="form.judgeConfig.memoryLimit"
+                allow-clear
+                :min="0"
+              >
+                <template #append>MB</template>
+              </a-input-number>
+            </a-form-item>
+            <a-form-item field="stack" label="Stack">
+              <a-input-number
+                v-model="form.judgeConfig.stackLimit"
+                allow-clear
+                :min="0"
+              >
+                <template #append>MB</template>
+              </a-input-number>
+            </a-form-item>
+            <a-form-item field="time" label="Time">
+              <a-input-number
+                v-model="form.judgeConfig.timeLimit"
+                allow-clear
+                :min="0"
+              >
+                <template #append>ms</template>
+              </a-input-number>
+            </a-form-item>
+          </a-form>
         </a-col>
       </a-row>
     </a-form-item>
@@ -85,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
 import CodeEditor from "@/components/CodeEditor.vue";
 
@@ -107,6 +105,8 @@ const form = reactive({
   },
   tags: [],
 });
+
+const layout = ref("vertical");
 </script>
 
 <style scoped></style>
