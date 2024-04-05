@@ -6,6 +6,7 @@ import ROLE_ENUM from "@/access/roleEnum";
 import UserLayout from "@/layouts/UserLayout.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
+import AddProblemView from "@/views/problem/AddProblemView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -58,6 +59,14 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/admin",
     name: "Admin",
     component: AdminView,
+    meta: {
+      access: ROLE_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/add/problem",
+    name: "AddProblem",
+    component: AddProblemView,
     meta: {
       access: ROLE_ENUM.ADMIN,
     },

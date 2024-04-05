@@ -54,6 +54,7 @@ const store = useStore();
 
 const handleLogin = async () => {
   const res = await UserControllerService.userLoginUsingPost(form);
+  // console.log(res.data);
   if (res.code === 0) {
     // alert("Login success" + JSON.stringify(res.data));
     await store.dispatch("user/getLoginUser", res.data);

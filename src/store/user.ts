@@ -15,6 +15,7 @@ export default {
     // todo login
     async getLoginUser({ commit, state }) {
       const res = await UserControllerService.getLoginUserUsingGet();
+      // console.log(res.data);
       if (res.code === 0) {
         commit("updateUser", res.data);
       } else {

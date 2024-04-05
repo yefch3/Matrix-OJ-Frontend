@@ -6,7 +6,7 @@ import roleCheck from "@/access/roleCheck";
 router.beforeEach(async (to, from, next) => {
   await store.dispatch("user/getLoginUser");
   const loginUser = store.state.user.loginUser;
-  console.log("loginUser", loginUser);
+  // console.log("loginUser", loginUser);
   // 如果是登录页，且已登录，跳转首页
   if (
     to.path === "/user/login" &&
