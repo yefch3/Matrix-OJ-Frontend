@@ -10,7 +10,7 @@
         />
       </a-form-item>
       <a-form-item field="content" label="Content">
-        <MdEditor v-model="form.content" style="width: 80%" />
+        <MdEditor v-model="form.content" />
       </a-form-item>
       <a-form-item field="tag" label="Tag">
         <a-select
@@ -75,7 +75,7 @@
         </a-row>
       </a-form-item>
       <a-form-item field="answer" label="Answer">
-        <MdEditor v-model="form.answer" style="width: 80%" />
+        <MdEditor v-model="form.answer" />
       </a-form-item>
       <a-form-item
         v-for="(judgeCaseItem, index) of form.judgeCase"
