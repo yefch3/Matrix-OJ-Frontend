@@ -21,26 +21,21 @@
         </a-menu-item>
       </a-menu>
     </a-col>
+    <!--    todo login and logout handle-->
     <a-col flex="100px">
       <a-dropdown @submit="handleLogout">
-        <a-button>{{ loginUser?.userName ?? "Sign in" }}</a-button>
+        <a-button style="background: white" @click="handleLogin">{{
+          loginUser?.userName ?? "Sign in"
+        }}</a-button>
         <template #content>
-          <a- html-type="submit">Log out</a->
+          <a-button
+            @click="handleLogout"
+            style="background: white"
+            v-if="loginUser?.userName !== null"
+            >Log out</a-button
+          >
         </template>
       </a-dropdown>
-      <div>
-        <!-- 使用 Arco Design 的按钮组件 -->
-        <a-button @click="handleLogout">
-          {{ "test" }}
-        </a-button>
-        <!-- 使用 Arco Design 的下拉菜单组件 -->
-        <a-dropdown v-model="handleLogout">
-          <!-- 下拉菜单内容 -->
-          <template #content>
-            <a-dropdown-button @click="handleLogout">Logout</a-dropdown-button>
-          </template>
-        </a-dropdown>
-      </div>
     </a-col>
   </a-row>
 </template>
@@ -57,7 +52,6 @@ const router = useRouter();
 const selectedKeys = ref(["/"]);
 const store = useStore();
 const loginUser = computed(() => store.state.user.loginUser);
-
 const visibleRoutes = computed(() => {
   return routes.filter((item, index) => {
     if (item.meta?.hideInMenu) {
@@ -82,6 +76,12 @@ const handleLogout = async () => {
   console.log("logout");
   await store.dispatch("user/userLogout");
   await router.push({ path: "/", replace: true });
+};
+
+const handleLogin = () => {
+  if (loginUser.value?.userName === null) {
+    router.push({ path: "/user/login" });
+  }
 };
 </script>
 

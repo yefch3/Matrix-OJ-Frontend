@@ -10,10 +10,11 @@
         />
       </a-form-item>
       <a-form-item field="content" label="Content">
-        <MdEditor v-model="form.content" />
+        <MdEditor :value="form.content" :handle-change="onContentChange" />
       </a-form-item>
-      <a-form-item field="tag" label="Tag">
+      <a-form-item field="tags" label="Tag">
         <a-select
+          v-model="form.tags"
           :style="{ width: '400px' }"
           placeholder="Please select tags..."
           multiple
@@ -29,9 +30,9 @@
           style="width: 160px; max-width: 50%"
           allow-clear
         >
-          <a-option style="color: limegreen">Easy</a-option>
-          <a-option style="color: orange">Medium</a-option>
-          <a-option style="color: red">Hard</a-option>
+          <a-option style="color: limegreen" :value="0">Easy</a-option>
+          <a-option style="color: orange" :value="1">Medium</a-option>
+          <a-option style="color: red" :value="2">Hard</a-option>
         </a-select>
       </a-form-item>
       <a-form-item field="judgeConfig" label="Limit">
@@ -75,7 +76,7 @@
         </a-row>
       </a-form-item>
       <a-form-item field="answer" label="Answer">
-        <MdEditor v-model="form.answer" />
+        <MdEditor :value="form.answer" :handle-change="onAnswerChange" />
       </a-form-item>
       <a-form-item
         v-for="(judgeCaseItem, index) of form.judgeCase"
@@ -125,7 +126,12 @@
       </a-form-item>
       <div style="margin-top: 16px" />
       <a-form-item>
-        <a-button html-type="submit" type="primary" style="min-width: 100px">
+        <a-button
+          html-type="submit"
+          type="primary"
+          style="min-width: 100px"
+          @click="doSubmit"
+        >
           Submit</a-button
         >
       </a-form-item>
@@ -134,14 +140,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
+import {
+  ProblemAddRequest,
+  ProblemControllerService,
+} from "../../../generated";
+import message from "@arco-design/web-vue/es/message";
 
 const form = reactive({
   title: "",
   answer: "",
   content: "",
-  difficulty: "",
+  difficulty: undefined,
   judgeCase: [
     {
       input: "",
@@ -199,6 +210,23 @@ const candidateTags = [
   { label: "Map", value: "Map" },
   { label: "Set", value: "Set" },
 ];
+const doSubmit = async () => {
+  console.log(form);
+  const res = await ProblemControllerService.addProblemUsingPost(
+    form as ProblemAddRequest
+  );
+  if (res.code === 0) {
+    message.success("Created successfully!");
+  } else {
+    message.error("Failed to create!" + res.message);
+  }
+};
+const onContentChange = (v: string) => {
+  form.content = v;
+};
+const onAnswerChange = (v: string) => {
+  form.answer = v;
+};
 </script>
 
 <style scoped>
