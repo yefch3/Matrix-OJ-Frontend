@@ -1,142 +1,136 @@
 <template>
-  <div
-    id="addProblemView"
-    style="
-      text-align: center;
-      font-size: 24px;
-      font-family: 'Arial', sans-serif;
-      font-weight: bold;
-      margin-bottom: 20px;
-    "
-  >
-    Add Problem
-  </div>
-  <a-form :model="form" label-align="left">
-    <a-form-item field="title" label="Title" required>
-      <a-input
-        v-model="form.title"
-        placeholder="please enter title..."
-        style="border: 1px solid #ccc; width: auto"
-      />
-    </a-form-item>
-    <a-form-item field="content" label="Content">
-      <MdEditor v-model="form.content" style="width: 80%" />
-    </a-form-item>
-    <a-form-item field="tag" label="Tag">
-      <a-select
-        :style="{ width: '400px' }"
-        placeholder="Please select tags..."
-        multiple
-        :options="candidateTags"
-        allow-create="true"
-        max-tag-count="3"
-      >
-      </a-select>
-    </a-form-item>
-    <a-form-item field="difficulty" label="Difficulty">
-      <a-select
-        v-model="form.difficulty"
-        style="width: 160px; max-width: 50%"
-        allow-clear
-      >
-        <a-option style="color: limegreen">Easy</a-option>
-        <a-option style="color: orange">Medium</a-option>
-        <a-option style="color: red">Hard</a-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item field="judgeConfig" label="Limit">
-      <a-row>
-        <a-col :span="6">
-          <a-form :model="form" layout="vertical">
-            <a-form-item field="memory" label="Memory (MB)">
-              <a-input-number
-                v-model="form.judgeConfig.memoryLimit"
-                :min="0"
-                class="config-input"
-              >
-              </a-input-number>
-            </a-form-item>
-          </a-form>
-        </a-col>
-        <a-col :span="6">
-          <a-form :model="form" layout="vertical">
-            <a-form-item field="stack" label="Stack (MB)">
-              <a-input-number
-                v-model="form.judgeConfig.stackLimit"
-                :min="0"
-                class="config-input"
-              >
-              </a-input-number>
-            </a-form-item>
-          </a-form>
-        </a-col>
-        <a-col :span="6">
-          <a-form :model="form" layout="vertical">
-            <a-form-item field="time" label="Time (ms)">
-              <a-input-number
-                v-model="form.judgeConfig.timeLimit"
-                :min="0"
-                class="config-input"
-              >
-              </a-input-number>
-            </a-form-item>
-          </a-form>
-        </a-col>
-      </a-row>
-    </a-form-item>
-    <a-form-item field="answer" label="Answer">
-      <MdEditor v-model="form.answer" style="width: 80%" />
-    </a-form-item>
-    <a-form-item
-      v-for="(judgeCaseItem, index) of form.judgeCase"
-      :label="`Case${index + 1}`"
-      :key="index"
-    >
-      <a-space direction="vertical">
-        <a-form-item
-          :field="`form.judgeCase[${index}].input`"
-          :label="`Input`"
-          :key="index"
+  <div id="addProblemView">
+    <h2 style="text-align: center">Add Problem</h2>
+    <a-form :model="form" label-align="left">
+      <a-form-item field="title" label="Title" required>
+        <a-input
+          v-model="form.title"
+          placeholder="please enter title..."
+          style="border: 1px solid #ccc; width: auto"
+        />
+      </a-form-item>
+      <a-form-item field="content" label="Content">
+        <MdEditor v-model="form.content" style="width: 80%" />
+      </a-form-item>
+      <a-form-item field="tag" label="Tag">
+        <a-select
+          :style="{ width: '400px' }"
+          placeholder="Please select tags..."
+          multiple
+          :options="candidateTags"
+          allow-create="true"
+          max-tag-count="3"
         >
-          <a-input
-            v-model="judgeCaseItem.input"
-            placeholder="please enter input..."
-          />
-        </a-form-item>
-        <a-form-item
-          :field="`form.judgeCase[${index}].output`"
-          :label="`Output`"
-          :key="index"
+        </a-select>
+      </a-form-item>
+      <a-form-item field="difficulty" label="Difficulty">
+        <a-select
+          v-model="form.difficulty"
+          style="width: 160px; max-width: 50%"
+          allow-clear
         >
-          <a-input
-            v-model="judgeCaseItem.output"
-            placeholder="please enter output..."
-          />
-        </a-form-item>
-        <a-form-item>
+          <a-option style="color: limegreen">Easy</a-option>
+          <a-option style="color: orange">Medium</a-option>
+          <a-option style="color: red">Hard</a-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item field="judgeConfig" label="Limit">
+        <a-row>
+          <a-col :span="6">
+            <a-form :model="form" layout="vertical">
+              <a-form-item field="memory" label="Memory (MB)">
+                <a-input-number
+                  v-model="form.judgeConfig.memoryLimit"
+                  :min="0"
+                  class="config-input"
+                >
+                </a-input-number>
+              </a-form-item>
+            </a-form>
+          </a-col>
+          <a-col :span="6">
+            <a-form :model="form" layout="vertical">
+              <a-form-item field="stack" label="Stack (MB)">
+                <a-input-number
+                  v-model="form.judgeConfig.stackLimit"
+                  :min="0"
+                  class="config-input"
+                >
+                </a-input-number>
+              </a-form-item>
+            </a-form>
+          </a-col>
+          <a-col :span="6">
+            <a-form :model="form" layout="vertical">
+              <a-form-item field="time" label="Time (ms)">
+                <a-input-number
+                  v-model="form.judgeConfig.timeLimit"
+                  :min="0"
+                  class="config-input"
+                >
+                </a-input-number>
+              </a-form-item>
+            </a-form>
+          </a-col>
+        </a-row>
+      </a-form-item>
+      <a-form-item field="answer" label="Answer">
+        <MdEditor v-model="form.answer" style="width: 80%" />
+      </a-form-item>
+      <a-form-item
+        v-for="(judgeCaseItem, index) of form.judgeCase"
+        :label="`Case${index + 1}`"
+        :key="index"
+      >
+        <a-space direction="vertical">
+          <a-form-item
+            :field="`form.judgeCase[${index}].input`"
+            :label="`Input`"
+            :key="index"
+          >
+            <a-input
+              v-model="judgeCaseItem.input"
+              placeholder="please enter input..."
+            />
+          </a-form-item>
+          <a-form-item
+            :field="`form.judgeCase[${index}].output`"
+            :label="`Output`"
+            :key="index"
+          >
+            <a-input
+              v-model="judgeCaseItem.output"
+              placeholder="please enter output..."
+            />
+          </a-form-item>
           <a-button
             @click="() => handleDelete(index)"
             style="width: 100px"
             type="outline"
+            status="danger"
           >
             Delete
           </a-button>
-        </a-form-item>
-      </a-space>
-    </a-form-item>
-    <a-form-item>
-      <a-button
-        @click="handleAdd"
-        style="width: 100px"
-        type="primary"
-        v-if="form.judgeCase.length < 5"
-        >Add Case</a-button
-      >
-    </a-form-item>
-    <a-form-item>
-      <a-button html-type="submit">Submit</a-button>
-    </a-form-item>
-  </a-form>
+        </a-space>
+      </a-form-item>
+      <a-form-item>
+        <a-button
+          @click="handleAdd"
+          style="width: 100px"
+          type="outline"
+          status="success"
+          v-if="form.judgeCase.length < 5"
+          >Add Case</a-button
+        >
+      </a-form-item>
+      <div style="margin-top: 16px" />
+      <a-form-item>
+        <a-button html-type="submit" type="primary" style="min-width: 100px">
+          Submit</a-button
+        >
+      </a-form-item>
+    </a-form>
+  </div>
 </template>
 
 <script setup lang="ts">
