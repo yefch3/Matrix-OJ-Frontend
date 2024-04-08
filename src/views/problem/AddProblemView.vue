@@ -166,15 +166,18 @@ const form = reactive({
   },
   tags: [],
 });
+
 const handleAdd = () => {
   form.judgeCase.push({
     input: "",
     output: "",
   });
 };
+
 const handleDelete = (index: number) => {
   form.judgeCase.splice(index, 1);
 };
+
 const candidateTags = [
   { label: "Array", value: "Array" },
   { label: "String", value: "String" },
@@ -210,6 +213,7 @@ const candidateTags = [
   { label: "Map", value: "Map" },
   { label: "Set", value: "Set" },
 ];
+
 const doSubmit = async () => {
   console.log(form);
   const res = await ProblemControllerService.addProblemUsingPost(
@@ -221,9 +225,11 @@ const doSubmit = async () => {
     message.error("Failed to create!" + res.message);
   }
 };
+
 const onContentChange = (v: string) => {
   form.content = v;
 };
+
 const onAnswerChange = (v: string) => {
   form.answer = v;
 };
