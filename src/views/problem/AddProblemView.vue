@@ -11,7 +11,7 @@
   >
     Add Problem
   </div>
-  <a-form :model="form">
+  <a-form :model="form" label-align="left">
     <a-form-item field="title" label="Title" required>
       <a-input
         v-model="form.title"
@@ -23,13 +23,15 @@
       <MdEditor v-model="form.content" style="width: 80%" />
     </a-form-item>
     <a-form-item field="tag" label="Tag">
-      <a-input-tag
-        v-model="form.tags"
-        label="Tag"
-        placeholder="please choose tags..."
-        allow-clear
-        style="border: 1px solid #ccc; width: auto; max-width: 50%"
-      />
+      <a-select
+        :style="{ width: '400px' }"
+        placeholder="Please select tags..."
+        multiple
+        :options="candidateTags"
+        allow-create="true"
+        max-tag-count="3"
+      >
+      </a-select>
     </a-form-item>
     <a-form-item field="difficulty" label="Difficulty">
       <a-select
@@ -37,9 +39,9 @@
         style="width: 160px; max-width: 50%"
         allow-clear
       >
-        <a-option>Easy</a-option>
-        <a-option>Medium</a-option>
-        <a-option>Hard</a-option>
+        <a-option style="color: limegreen">Easy</a-option>
+        <a-option style="color: orange">Medium</a-option>
+        <a-option style="color: red">Hard</a-option>
       </a-select>
     </a-form-item>
     <a-form-item field="judgeConfig" label="Limit">
@@ -123,7 +125,11 @@
       </a-space>
     </a-form-item>
     <a-form-item>
-      <a-button @click="handleAdd" style="width: 100px" type="primary"
+      <a-button
+        @click="handleAdd"
+        style="width: 100px"
+        type="primary"
+        v-if="form.judgeCase.length < 5"
         >Add Case</a-button
       >
     </a-form-item>
@@ -164,6 +170,41 @@ const handleAdd = () => {
 const handleDelete = (index: number) => {
   form.judgeCase.splice(index, 1);
 };
+const candidateTags = [
+  { label: "Array", value: "Array" },
+  { label: "String", value: "String" },
+  { label: "Math", value: "Math" },
+  { label: "Tree", value: "Tree" },
+  { label: "Graph", value: "Graph" },
+  { label: "Dynamic Programming", value: "Dynamic Programming" },
+  { label: "Backtracking", value: "Backtracking" },
+  { label: "Design", value: "Design" },
+  { label: "Bit Manipulation", value: "Bit Manipulation" },
+  { label: "Greedy", value: "Greedy" },
+  { label: "Depth-first Search", value: "Depth-first Search" },
+  { label: "Breadth-first Search", value: "Breadth-first Search" },
+  { label: "Binary Search", value: "Binary Search" },
+  { label: "Two Pointers", value: "Two Pointers" },
+  { label: "Sort", value: "Sort" },
+  { label: "Heap", value: "Heap" },
+  { label: "Hash Table", value: "Hash Table" },
+  { label: "Stack", value: "Stack" },
+  { label: "Queue", value: "Queue" },
+  { label: "Linked List", value: "Linked List" },
+  { label: "Union Find", value: "Union Find" },
+  { label: "Trie", value: "Trie" },
+  { label: "Binary Indexed Tree", value: "Binary Indexed Tree" },
+  { label: "Segment Tree", value: "Segment Tree" },
+  { label: "Binary Search Tree", value: "Binary Search Tree" },
+  { label: "Recursion", value: "Recursion" },
+  { label: "Divide and Conquer", value: "Divide and Conquer" },
+  { label: "Sliding Window", value: "Sliding Window" },
+  { label: "Topological Sort", value: "Topological Sort" },
+  { label: "Random", value: "Random" },
+  { label: "Geometry", value: "Geometry" },
+  { label: "Map", value: "Map" },
+  { label: "Set", value: "Set" },
+];
 </script>
 
 <style scoped>
