@@ -73,6 +73,14 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: "/update/problem",
+    name: "Update Problem",
+    component: AddProblemView,
+    meta: {
+      access: ROLE_ENUM.ADMIN,
+    },
+  },
+  {
     path: "/manage/problem",
     name: "Manage Problem",
     component: ManageProblemView,

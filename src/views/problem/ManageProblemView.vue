@@ -1,9 +1,21 @@
 <template>
   <div id="manageProblemView">
-    <a-table :columns="columns" :data="data">
+    <a-table
+      :columns="columns"
+      :data="dataList"
+      :pagination="{
+        pageSize: searchParams.pageSize,
+        current: searchParams.pageNum,
+        showTotal: true,
+        showJumper: true,
+      }"
+    >
       <template #optional="{ record }">
-        <a-button @click="$modal.info({ title: 'Name', content: record.name })"
-          >view</a-button
+        <a-button style="width: 60px" type="primary" @click="doUpdate(record)"
+          >Update</a-button
+        >
+        <a-button style="width: 60px" status="danger" @click="doDelete(record)"
+          >Delete</a-button
         >
       </template>
     </a-table>
@@ -11,79 +23,147 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { ProblemControllerService } from "../../../generated";
+import { Problem } from "../../../generated";
+import message from "@arco-design/web-vue/es/message";
+import { useRouter } from "vue-router";
 
 const show = ref(true);
 
+const dataList = ref([]);
+
+const total = ref(0);
+
+const searchParams = ref({
+  pageSize: 10,
+  pageNum: 1,
+});
+
+const loadData = async () => {
+  const res = await ProblemControllerService.listProblemByPageUsingPost(
+    searchParams.value
+  );
+  if (res.code === 0) {
+    dataList.value = res.data.records;
+    total.value = res.data.total;
+    console.log(res.data);
+  } else {
+    message.error("Failed to load data. " + res.message);
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
+const difficultyFilter = (difficulty: number) => {
+  switch (difficulty) {
+    case 0:
+      return "Easy";
+    case 1:
+      return "Medium";
+    case 2:
+      return "Hard";
+    default:
+      return "Unknown";
+  }
+};
+
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
+    title: "ID",
+    dataIndex: "id",
   },
   {
-    title: "Salary",
-    dataIndex: "salary",
+    title: "Title",
+    dataIndex: "title",
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "Content",
+    dataIndex: "content",
   },
   {
-    title: "Email",
-    dataIndex: "email",
+    title: "Tags",
+    dataIndex: "tags",
+  },
+  {
+    title: "Difficulty",
+    dataIndex: "difficulty",
+    render: (text: number) => difficultyFilter(text),
+  },
+  {
+    title: "Answer",
+    dataIndex: "answer",
+  },
+  {
+    title: "Submitted",
+    dataIndex: "submitNum",
+  },
+  {
+    title: "Accepted",
+    dataIndex: "acceptNum",
+  },
+  {
+    title: "Case",
+    dataIndex: "judgeCase",
+  },
+  {
+    title: "Limit",
+    dataIndex: "judgeConfig",
+  },
+  {
+    title: "Thumb",
+    dataIndex: "thumbNum",
+  },
+  {
+    title: "Favour",
+    dataIndex: "favourNum",
+  },
+  {
+    title: "Creator",
+    dataIndex: "userId",
+  },
+  {
+    title: "CreateTime",
+    dataIndex: "createTime",
+  },
+  {
+    title: "UpdateTime",
+    dataIndex: "updateTime",
+  },
+  {
+    title: "IsDelete",
+    dataIndex: "isDelete",
   },
   {
     title: "Optional",
     slotName: "optional",
   },
 ];
-const data = [
-  {
-    key: "1",
-    name: "Jane Doe",
-    first: "Jane",
-    last: "Doe",
-    salary: 23000,
-    address: "32 Park Road, London",
-    email: "jane.doe@example.com",
-  },
-  {
-    key: "2",
-    name: "Alisa Ross",
-    first: "Alisa",
-    last: "Ross",
-    salary: 25000,
-    address: "35 Park Road, London",
-    email: "alisa.ross@example.com",
-  },
-  {
-    key: "3",
-    name: "Kevin Sandra",
-    first: "Kevin",
-    last: "Sandra",
-    salary: 22000,
-    address: "31 Park Road, London",
-    email: "kevin.sandra@example.com",
-  },
-  {
-    key: "4",
-    name: "Ed Hellen",
-    first: "Ed",
-    last: "Hellen",
-    salary: 17000,
-    address: "42 Park Road, London",
-    email: "ed.hellen@example.com",
-  },
-  {
-    key: "5",
-    name: "William Smith",
-    first: "William",
-    last: "Smith",
-    salary: 27000,
-    address: "62 Park Road, London",
-    email: "william.smith@example.com",
-  },
-];
+
+const doDelete = async (problem: Problem) => {
+  const res = await ProblemControllerService.deleteProblemUsingPost({
+    id: problem.id,
+  });
+  if (res.code === 0) {
+    message.success("Delete success");
+    await loadData();
+  } else {
+    message.error("Failed to delete. " + res.message);
+  }
+};
+
+const router = useRouter();
+
+const doUpdate = (problem: Problem) => {
+  router.push({
+    path: "/update/problem",
+    query: {
+      id: problem.id,
+    },
+  });
+};
 </script>
 
 <style scoped></style>
