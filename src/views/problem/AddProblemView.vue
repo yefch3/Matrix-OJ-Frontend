@@ -19,8 +19,8 @@
           placeholder="Please select tags..."
           multiple
           :options="candidateTags"
-          allow-create="true"
-          max-tag-count="3"
+          :allow-create="true"
+          :max-tag-count="3"
         >
         </a-select>
       </a-form-item>
@@ -140,15 +140,21 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
+import { useRoute } from "vue-router";
 import {
+  Problem,
   ProblemAddRequest,
   ProblemControllerService,
 } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 
-const form = reactive({
+const route = useRoute();
+
+const updatePage = route.path.includes("update");
+
+let form = reactive({
   title: "",
   answer: "",
   content: "",
@@ -166,6 +172,23 @@ const form = reactive({
   },
   tags: [],
 });
+
+const loadData = async () => {
+  const id = route.query.id;
+  if (!id) {
+    return;
+  }
+  if (updatePage) {
+    const res = await ProblemControllerService.getProblemByIdUsingGet(
+      id as any
+    );
+    if (res.code === 0) {
+      form = res.data as any;
+    } else {
+      message.error("Failed to load data. " + res.message);
+    }
+  }
+};
 
 const handleAdd = () => {
   form.judgeCase.push({

@@ -6,6 +6,7 @@ import type { BaseResponse_boolean_ } from '../models/BaseResponse_boolean_';
 import type { BaseResponse_long_ } from '../models/BaseResponse_long_';
 import type { BaseResponse_Page_Problem_ } from '../models/BaseResponse_Page_Problem_';
 import type { BaseResponse_Page_ProblemVO_ } from '../models/BaseResponse_Page_ProblemVO_';
+import type { BaseResponse_Problem_ } from '../models/BaseResponse_Problem_';
 import type { BaseResponse_ProblemVO_ } from '../models/BaseResponse_ProblemVO_';
 import type { DeleteRequest } from '../models/DeleteRequest';
 import type { ProblemAddRequest } from '../models/ProblemAddRequest';
@@ -72,6 +73,28 @@ export class ProblemControllerService {
             method: 'POST',
             url: '/api/problem/edit',
             body: problemEditRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * getProblemById
+     * @param id id
+     * @returns BaseResponse_Problem_ OK
+     * @throws ApiError
+     */
+    public static getProblemByIdUsingGet(
+        id?: number,
+    ): CancelablePromise<BaseResponse_Problem_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/problem/get',
+            query: {
+                'id': id,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

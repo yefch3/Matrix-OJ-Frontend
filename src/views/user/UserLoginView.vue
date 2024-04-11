@@ -27,9 +27,9 @@
           placeholder="Please enter your password"
         />
       </a-form-item>
-      <a-form-item field="isRead">
-        <a-checkbox v-model="form.rememberMe">Remember me</a-checkbox>
-      </a-form-item>
+      <!--      <a-form-item field="isRead">-->
+      <!--        <a-checkbox v-model="form.rememberMe">Remember me</a-checkbox>-->
+      <!--      </a-form-item>-->
       <a-form-item>
         <a-button type="primary" html-type="submit">Log in</a-button>
       </a-form-item>

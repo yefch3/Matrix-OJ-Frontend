@@ -19,6 +19,7 @@ export type { BaseResponse_Page_ProblemVO_ } from './models/BaseResponse_Page_Pr
 export type { BaseResponse_Page_User_ } from './models/BaseResponse_Page_User_';
 export type { BaseResponse_Page_UserVO_ } from './models/BaseResponse_Page_UserVO_';
 export type { BaseResponse_PostVO_ } from './models/BaseResponse_PostVO_';
+export type { BaseResponse_Problem_ } from './models/BaseResponse_Problem_';
 export type { BaseResponse_ProblemVO_ } from './models/BaseResponse_ProblemVO_';
 export type { BaseResponse_string_ } from './models/BaseResponse_string_';
 export type { BaseResponse_User_ } from './models/BaseResponse_User_';

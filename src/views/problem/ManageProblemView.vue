@@ -29,7 +29,7 @@ import { Problem } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 
-const show = ref(true);
+// const show = ref(true);
 
 const dataList = ref([]);
 
@@ -47,7 +47,7 @@ const loadData = async () => {
   if (res.code === 0) {
     dataList.value = res.data.records;
     total.value = res.data.total;
-    console.log(res.data);
+    // console.log(res.data);
   } else {
     message.error("Failed to load data. " + res.message);
   }
@@ -56,19 +56,6 @@ const loadData = async () => {
 onMounted(() => {
   loadData();
 });
-
-const difficultyFilter = (difficulty: number) => {
-  switch (difficulty) {
-    case 0:
-      return "Easy";
-    case 1:
-      return "Medium";
-    case 2:
-      return "Hard";
-    default:
-      return "Unknown";
-  }
-};
 
 const columns = [
   {
@@ -90,7 +77,6 @@ const columns = [
   {
     title: "Difficulty",
     dataIndex: "difficulty",
-    render: (text: number) => difficultyFilter(text),
   },
   {
     title: "Answer",
