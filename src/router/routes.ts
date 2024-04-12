@@ -77,6 +77,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: "Update Problem",
     component: AddProblemView,
     meta: {
+      hideInMenu: true,
       access: ROLE_ENUM.ADMIN,
     },
   },

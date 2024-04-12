@@ -134,17 +134,24 @@
         >
           Submit</a-button
         >
+        <span style="margin: 0 8px" />
+        <a-button
+          html-type="button"
+          type="secondary"
+          style="min-width: 100px; background-color: darkgrey"
+          @click="doCancel"
+          >Cancel</a-button
+        >
       </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
-  Problem,
   ProblemAddRequest,
   ProblemControllerService,
 } from "../../../generated";
@@ -154,7 +161,7 @@ const route = useRoute();
 
 const updatePage = route.path.includes("update");
 
-let form = reactive({
+let form = ref({
   title: "",
   answer: "",
   content: "",
@@ -173,6 +180,7 @@ let form = reactive({
   tags: [],
 });
 
+// todo: load data，目前是前端转换的，后续需要后端处理JSON文件，包含judgeCase，judgeConfig还有tags
 const loadData = async () => {
   const id = route.query.id;
   if (!id) {
@@ -183,22 +191,45 @@ const loadData = async () => {
       id as any
     );
     if (res.code === 0) {
-      form = res.data as any;
+      form.value = res.data as any;
+      if (!form.value.judgeCase) {
+        form.value.judgeCase = [];
+      } else {
+        form.value.judgeCase = JSON.parse(form.value.judgeCase as any);
+      }
+      if (!form.value.judgeConfig) {
+        form.value.judgeConfig = {
+          memoryLimit: 1000,
+          stackLimit: 1000,
+          timeLimit: 1000,
+        };
+      } else {
+        form.value.judgeConfig = JSON.parse(form.value.judgeConfig as any);
+      }
+      if (!form.value.tags) {
+        form.value.tags = [];
+      } else {
+        form.value.tags = JSON.parse(form.value.tags as any);
+      }
     } else {
       message.error("Failed to load data. " + res.message);
     }
   }
 };
 
+onMounted(() => {
+  loadData();
+});
+
 const handleAdd = () => {
-  form.judgeCase.push({
+  form.value.judgeCase.push({
     input: "",
     output: "",
   });
 };
 
 const handleDelete = (index: number) => {
-  form.judgeCase.splice(index, 1);
+  form.value.judgeCase.splice(index, 1);
 };
 
 const candidateTags = [
@@ -237,10 +268,26 @@ const candidateTags = [
   { label: "Set", value: "Set" },
 ];
 
+const router = useRouter();
+
 const doSubmit = async () => {
-  console.log(form);
+  // console.log(form.value);
+  // 如果是更新页面，调用更新接口
+  if (updatePage) {
+    const res = await ProblemControllerService.updateProblemUsingPost(
+      form.value as ProblemAddRequest
+    );
+    if (res.code === 0) {
+      message.success("Updated successfully!");
+      await router.push("/manage/problem");
+    } else {
+      message.error("Failed to update!" + res.message);
+    }
+    return;
+  }
+  // 否则调用新增接口
   const res = await ProblemControllerService.addProblemUsingPost(
-    form as ProblemAddRequest
+    form.value as ProblemAddRequest
   );
   if (res.code === 0) {
     message.success("Created successfully!");
@@ -250,11 +297,16 @@ const doSubmit = async () => {
 };
 
 const onContentChange = (v: string) => {
-  form.content = v;
+  form.value.content = v;
 };
 
 const onAnswerChange = (v: string) => {
-  form.answer = v;
+  form.value.answer = v;
+};
+
+const doCancel = async () => {
+  // 取消按钮，直接跳转到管理页面
+  await router.push("/manage/problem");
 };
 </script>
 

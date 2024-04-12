@@ -14,9 +14,22 @@
         <a-button style="width: 60px" type="primary" @click="doUpdate(record)"
           >Update</a-button
         >
-        <a-button style="width: 60px" status="danger" @click="doDelete(record)"
+        <a-button style="width: 60px" status="danger" @click="clickDelete"
           >Delete</a-button
         >
+        <a-modal
+          :visible="visible"
+          @ok="handleDeleteOk(record)"
+          @cancel="handleDeleteCancel"
+          okText="Confirm"
+          cancelText="Cancel"
+          unmountOnClose
+        >
+          <template #title> Warning </template>
+          <div>
+            <p>Are you sure to delete this problem?</p>
+          </div>
+        </a-modal>
       </template>
     </a-table>
   </div>
@@ -35,11 +48,13 @@ const dataList = ref([]);
 
 const total = ref(0);
 
+// 查询参数
 const searchParams = ref({
   pageSize: 10,
   pageNum: 1,
 });
 
+// 加载数据函数
 const loadData = async () => {
   const res = await ProblemControllerService.listProblemByPageUsingPost(
     searchParams.value
@@ -53,10 +68,12 @@ const loadData = async () => {
   }
 };
 
+// 进入页面时加载数据
 onMounted(() => {
   loadData();
 });
 
+// 表格列定义
 const columns = [
   {
     title: "ID",
@@ -128,6 +145,12 @@ const columns = [
   },
 ];
 
+// 点击删除按钮，触发二次确认删除题目对话框
+const clickDelete = async () => {
+  visible.value = true;
+};
+
+// 删除题目，并刷新列表
 const doDelete = async (problem: Problem) => {
   const res = await ProblemControllerService.deleteProblemUsingPost({
     id: problem.id,
@@ -142,6 +165,7 @@ const doDelete = async (problem: Problem) => {
 
 const router = useRouter();
 
+// 跳转到更新题目页面
 const doUpdate = (problem: Problem) => {
   router.push({
     path: "/update/problem",
@@ -149,6 +173,20 @@ const doUpdate = (problem: Problem) => {
       id: problem.id,
     },
   });
+};
+
+// 删除题目二次确认对话框是否可见
+const visible = ref(false);
+
+// 二次确认删除题目
+const handleDeleteOk = async (problem: Problem) => {
+  await doDelete(problem);
+  visible.value = false;
+};
+
+// 二次确认取消删除题目
+const handleDeleteCancel = () => {
+  visible.value = false;
 };
 </script>
 
