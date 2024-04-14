@@ -5,10 +5,12 @@
       :data="dataList"
       :pagination="{
         pageSize: searchParams.pageSize,
-        current: searchParams.pageNum,
+        current: searchParams.current,
         showTotal: true,
         showJumper: true,
+        total,
       }"
+      @page-change="onPageChange"
     >
       <template #optional="{ record }">
         <a-button style="width: 60px" type="primary" @click="doUpdate(record)"
@@ -36,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { ProblemControllerService } from "../../../generated";
 import { Problem } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
@@ -48,10 +50,10 @@ const dataList = ref([]);
 
 const total = ref(0);
 
-// 查询参数
+// 查询参数，pageSize: 每页显示条数，current: 当前页码
 const searchParams = ref({
-  pageSize: 10,
-  pageNum: 1,
+  pageSize: 1,
+  current: 1,
 });
 
 // 加载数据函数
@@ -187,6 +189,19 @@ const handleDeleteOk = async (problem: Problem) => {
 // 二次确认取消删除题目
 const handleDeleteCancel = () => {
   visible.value = false;
+};
+
+// 监听查询参数变化，加载数据
+watchEffect(() => {
+  loadData();
+});
+
+// 分页改变时触发
+const onPageChange = async (page: number) => {
+  searchParams.value = {
+    ...searchParams.value,
+    current: page,
+  };
 };
 </script>
 
