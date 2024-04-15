@@ -1,6 +1,4 @@
 import { RouteRecordRaw } from "vue-router";
-import HomeView from "@/views/ExampleView.vue";
-import AdminView from "@/views/AdminView.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
 import ROLE_ENUM from "@/access/roleEnum";
 import UserLayout from "@/layouts/UserLayout.vue";
@@ -8,6 +6,8 @@ import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
 import AddProblemView from "@/views/problem/AddProblemView.vue";
 import ManageProblemView from "@/views/problem/ManageProblemView.vue";
+import ProblemView from "@/views/problem/ProblemView.vue";
+import AboutView from "@/views/AboutView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -39,8 +39,17 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/",
+    name: "Home",
+    component: AboutView,
+    meta: {
+      hideInMenu: true,
+      access: ROLE_ENUM.NOT_LOGIN,
+    },
+  },
+  {
+    path: "/problem",
     name: "Problems",
-    component: HomeView,
+    component: ProblemView,
     meta: {
       access: ROLE_ENUM.NOT_LOGIN,
     },
@@ -56,14 +65,6 @@ export const routes: Array<RouteRecordRaw> = [
       },
     },
   },
-  // {
-  //   path: "/admin",
-  //   name: "Admin",
-  //   component: AdminView,
-  //   meta: {
-  //     access: ROLE_ENUM.ADMIN,
-  //   },
-  // },
   {
     path: "/add/problem",
     name: "Add Problem",
@@ -89,13 +90,4 @@ export const routes: Array<RouteRecordRaw> = [
       access: ROLE_ENUM.ADMIN,
     },
   },
-  // {
-  //   path: "/about",
-  //   name: "about",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  // },
 ];

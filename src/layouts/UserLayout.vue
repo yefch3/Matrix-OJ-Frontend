@@ -3,8 +3,17 @@
     <a-layout style="min-height: 100vh">
       <a-layout-header class="header">
         <a-space>
-          <img src="../assets/logo.png" class="logo" />
-          <div class="title">OJ System</div>
+          <router-link to="/">
+            <img
+              src="../assets/logo.png"
+              class="logo"
+              style="cursor: pointer"
+              alt="logo"
+            />
+          </router-link>
+          <router-link to="/">
+            <div class="title" style="cursor: pointer">OJ System</div>
+          </router-link>
         </a-space>
       </a-layout-header>
       <a-layout-content class="content">
@@ -20,9 +29,6 @@
 </template>
 
 <style scoped>
-#userLayout {
-}
-
 #userLayout .header {
   background: #aaa;
 }

@@ -12,8 +12,17 @@
           disabled
         >
           <div class="title-bar">
-            <img class="logo" src="../assets/logo.png" />
-            <div class="title">OJ System</div>
+            <router-link to="/">
+              <img
+                class="logo"
+                src="../assets/logo.png"
+                alt="logo"
+                style="cursor: pointer"
+              />
+            </router-link>
+            <router-link to="/">
+              <div class="title" style="cursor: pointer">OJ System</div>
+            </router-link>
           </div>
         </a-menu-item>
         <a-menu-item v-for="item in visibleRoutes" :key="item.path">
