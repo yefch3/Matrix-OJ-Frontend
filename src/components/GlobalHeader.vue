@@ -82,7 +82,7 @@ const doMenuClick = (key: string) => {
 };
 
 const handleLogout = async () => {
-  console.log("logout");
+  // console.log("logout");
   await store.dispatch("user/userLogout");
   await router.push({ path: "/", replace: true });
 };

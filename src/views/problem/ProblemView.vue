@@ -12,13 +12,39 @@
       }"
       @page-change="onPageChange"
     >
+      <template #title="{ record }">
+        <!--        todo: 问题标题点击跳转到题目详情页-->
+        <a-space>
+          <a-link :hoverable="false" href="add/problem">
+            {{ record.title }}
+          </a-link>
+        </a-space>
+      </template>
+      <template #difficulty="{ record }">
+        <a-space>
+          <a-tag v-if="record.difficulty === 0" color="green">Easy</a-tag>
+          <a-tag v-else-if="record.difficulty === 1" color="orange">
+            Medium
+          </a-tag>
+          <a-tag v-else-if="record.difficulty === 2" color="red">Hard</a-tag>
+          <a-tag v-else color="grey">Unknown</a-tag>
+        </a-space>
+      </template>
+      <template #acceptRate="{ record }">
+        <a-space>
+          <span v-if="record.submitNum !== 0">
+            {{ ((record.acceptNum / record.submitNum) * 100).toFixed(2) }}%
+          </span>
+          <span v-else>0.00%</span>
+        </a-space>
+      </template>
       <template #optional="{ record }">
-        <a-button style="width: 60px" type="primary" @click="doUpdate(record)"
-          >Update</a-button
-        >
-        <a-button style="width: 60px" status="danger" @click="clickDelete"
-          >Delete</a-button
-        >
+        <a-button style="width: 60px" type="primary" @click="doUpdate(record)">
+          Update
+        </a-button>
+        <a-button style="width: 60px" status="danger" @click="clickDelete">
+          Delete
+        </a-button>
         <a-modal
           :visible="visible"
           @ok="handleDeleteOk(record)"
@@ -52,19 +78,23 @@ const total = ref(0);
 
 // 查询参数，pageSize: 每页显示条数，current: 当前页码
 const searchParams = ref({
-  pageSize: 1,
+  pageSize: 10,
   current: 1,
 });
 
 // 加载数据函数
 const loadData = async () => {
-  const res = await ProblemControllerService.listProblemByPageUsingPost(
+  const res = await ProblemControllerService.listProblemVoByPageUsingPost(
     searchParams.value
   );
   if (res.code === 0) {
-    dataList.value = res.data.records;
+    dataList.value = res.data.records.map(
+      (problem: Problem, index: number) => ({
+        ...problem,
+        index: index + 1, // 从1开始的序号
+      })
+    );
     total.value = res.data.total;
-    // console.log(res.data);
   } else {
     message.error("Failed to load data. " + res.message);
   }
@@ -75,74 +105,45 @@ onMounted(() => {
   loadData();
 });
 
-// 表格列定义
+// 表格列定义 todo: 有些数据需要加载但是在该页面中不用显示，而要在详情页中显示
 const columns = [
   {
-    title: "ID",
-    dataIndex: "id",
+    title: "No.",
+    dataIndex: "index",
   },
+  // {
+  //   title: "ID",
+  //   dataIndex: "id",
+  // },
   {
     title: "Title",
-    dataIndex: "title",
+    slotName: "title",
   },
-  {
-    title: "Content",
-    dataIndex: "content",
-  },
-  {
-    title: "Tags",
-    dataIndex: "tags",
-  },
+  // {
+  //   title: "Tags",
+  //   dataIndex: "tags",
+  // },
   {
     title: "Difficulty",
-    dataIndex: "difficulty",
+    slotName: "difficulty",
   },
   {
-    title: "Answer",
-    dataIndex: "answer",
+    title: "Accept Rate",
+    slotName: "acceptRate",
   },
-  {
-    title: "Submitted",
-    dataIndex: "submitNum",
-  },
-  {
-    title: "Accepted",
-    dataIndex: "acceptNum",
-  },
-  {
-    title: "Case",
-    dataIndex: "judgeCase",
-  },
-  {
-    title: "Limit",
-    dataIndex: "judgeConfig",
-  },
-  {
-    title: "Thumb",
-    dataIndex: "thumbNum",
-  },
-  {
-    title: "Favour",
-    dataIndex: "favourNum",
-  },
-  {
-    title: "Creator",
-    dataIndex: "userId",
-  },
+  // {
+  //   title: "Thumb",
+  //   dataIndex: "thumbNum",
+  // },
+  // {
+  //   title: "Favour",
+  //   dataIndex: "favourNum",
+  // },
   {
     title: "CreateTime",
     dataIndex: "createTime",
   },
   {
-    title: "UpdateTime",
-    dataIndex: "updateTime",
-  },
-  {
-    title: "IsDelete",
-    dataIndex: "isDelete",
-  },
-  {
-    title: "Optional",
     slotName: "optional",
   },
 ];

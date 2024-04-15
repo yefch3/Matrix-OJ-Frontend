@@ -53,12 +53,28 @@ const router = useRouter();
 const store = useStore();
 
 const handleLogin = async () => {
+  const redirect = router.currentRoute.value.query.redirect as string;
   const res = await UserControllerService.userLoginUsingPost(form);
-  // console.log(res.data);
   if (res.code === 0) {
-    // alert("Login success" + JSON.stringify(res.data));
     await store.dispatch("user/getLoginUser", res.data);
-    await router.push({ path: "/", replace: true });
+    // 如果登录成功，跳转到首页或者重定向页面
+    if (redirect) {
+      // todo: 查询参数，从redirect里面分割，在?之后的参数
+      const queryParams = redirect.split("?")[1];
+      await router.push({
+        path: redirect,
+        query: {
+          // todo: 可能有更好的方法分割
+          ...Object.fromEntries(new URLSearchParams(queryParams)),
+        },
+        replace: true,
+      });
+    } else {
+      await router.push({
+        path: "/",
+        replace: true,
+      });
+    }
   } else {
     message.error("Login failed: " + res.message);
   }
