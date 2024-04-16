@@ -38,26 +38,13 @@
           <span v-else>0.00%</span>
         </a-space>
       </template>
-      <template #optional="{ record }">
-        <a-button style="width: 60px" type="primary" @click="doUpdate(record)">
-          Update
-        </a-button>
-        <a-button style="width: 60px" status="danger" @click="clickDelete">
-          Delete
-        </a-button>
-        <a-modal
-          :visible="visible"
-          @ok="handleDeleteOk(record)"
-          @cancel="handleDeleteCancel"
-          okText="Confirm"
-          cancelText="Cancel"
-          unmountOnClose
-        >
-          <template #title> Warning </template>
-          <div>
-            <p>Are you sure to delete this problem?</p>
-          </div>
-        </a-modal>
+      <template #createTime="{ record }">
+        {{ moment(record.createTime).format("YYYY-MM-DD") }}
+      </template>
+      <!--      todo: 状态图标，当未登录时不显示，当用户登陆后，将已经accept的题目标记打勾图标，将submit但未accept的题目标记尝试中，将未做的题目标记为空白-->
+      <template #status>
+        <icon-check-circle />
+        <icon-question-circle />
       </template>
     </a-table>
   </div>
@@ -69,6 +56,11 @@ import { ProblemControllerService } from "../../../generated";
 import { Problem } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
+import moment from "moment";
+import {
+  IconCheckCircle,
+  IconQuestionCircle,
+} from "@arco-design/web-vue/es/icon";
 
 // const show = ref(true);
 
@@ -108,6 +100,10 @@ onMounted(() => {
 // 表格列定义 todo: 有些数据需要加载但是在该页面中不用显示，而要在详情页中显示
 const columns = [
   {
+    title: "Status",
+    slotName: "status",
+  },
+  {
     title: "No.",
     dataIndex: "index",
   },
@@ -141,56 +137,11 @@ const columns = [
   // },
   {
     title: "CreateTime",
-    dataIndex: "createTime",
-  },
-  {
-    slotName: "optional",
+    slotName: "createTime",
   },
 ];
 
-// 点击删除按钮，触发二次确认删除题目对话框
-const clickDelete = async () => {
-  visible.value = true;
-};
-
-// 删除题目，并刷新列表
-const doDelete = async (problem: Problem) => {
-  const res = await ProblemControllerService.deleteProblemUsingPost({
-    id: problem.id,
-  });
-  if (res.code === 0) {
-    message.success("Delete success");
-    await loadData();
-  } else {
-    message.error("Failed to delete. " + res.message);
-  }
-};
-
 const router = useRouter();
-
-// 跳转到更新题目页面
-const doUpdate = (problem: Problem) => {
-  router.push({
-    path: "/update/problem",
-    query: {
-      id: problem.id,
-    },
-  });
-};
-
-// 删除题目二次确认对话框是否可见
-const visible = ref(false);
-
-// 二次确认删除题目
-const handleDeleteOk = async (problem: Problem) => {
-  await doDelete(problem);
-  visible.value = false;
-};
-
-// 二次确认取消删除题目
-const handleDeleteCancel = () => {
-  visible.value = false;
-};
 
 // 监听查询参数变化，加载数据
 watchEffect(() => {
