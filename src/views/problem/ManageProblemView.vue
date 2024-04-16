@@ -52,7 +52,7 @@ const total = ref(0);
 
 // 查询参数，pageSize: 每页显示条数，current: 当前页码
 const searchParams = ref({
-  pageSize: 1,
+  pageSize: 10,
   current: 1,
 });
 
@@ -96,6 +96,9 @@ const columns = [
   {
     title: "Difficulty",
     dataIndex: "difficulty",
+    sortable: {
+      sortDirections: ['ascend', 'descend'],
+    },
   },
   {
     title: "Answer",

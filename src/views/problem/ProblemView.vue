@@ -15,7 +15,7 @@
       <template #title="{ record }">
         <!--        todo: 问题标题点击跳转到题目详情页-->
         <a-space>
-          <a-link :hoverable="false" href="add/problem">
+          <a-link :hoverable="false" @click="toDescription(record)">
             {{ record.title }}
           </a-link>
         </a-space>
@@ -106,6 +106,9 @@ const columns = [
   {
     title: "No.",
     dataIndex: "index",
+    sortable: {
+      sortDirections: ["ascend", "descend"],
+    },
   },
   // {
   //   title: "ID",
@@ -113,7 +116,11 @@ const columns = [
   // },
   {
     title: "Title",
+    dataIndex: "title",
     slotName: "title",
+    sortable: {
+      sortDirections: ["ascend", "descend"],
+    },
   },
   // {
   //   title: "Tags",
@@ -122,10 +129,18 @@ const columns = [
   {
     title: "Difficulty",
     slotName: "difficulty",
+    dataIndex: "difficulty",
+    sortable: {
+      sortDirections: ["ascend", "descend"],
+    },
   },
   {
+    // todo: 完成对accept rate的排序功能
     title: "Accept Rate",
     slotName: "acceptRate",
+    sortable: {
+      sortDirections: ["ascend", "descend"],
+    },
   },
   // {
   //   title: "Thumb",
@@ -138,6 +153,10 @@ const columns = [
   {
     title: "CreateTime",
     slotName: "createTime",
+    dataIndex: "createTime",
+    sortable: {
+      sortDirections: ["ascend", "descend"],
+    },
   },
 ];
 
@@ -154,6 +173,16 @@ const onPageChange = async (page: number) => {
     ...searchParams.value,
     current: page,
   };
+};
+
+// 跳转到题目详情页
+const toDescription = (record: Problem) => {
+  router.push({
+    path: "/problem/description",
+    query: {
+      id: record.id,
+    },
+  });
 };
 </script>
 
