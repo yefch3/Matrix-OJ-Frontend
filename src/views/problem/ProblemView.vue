@@ -15,7 +15,7 @@
       <template #title="{ record }">
         <!--        todo: 问题标题点击跳转到题目详情页-->
         <a-space>
-          <a-link :hoverable="false" @click="toDescription(record)">
+          <a-link :hoverable="false" :href="toDescription(record)">
             {{ record.title }}
           </a-link>
         </a-space>
@@ -177,12 +177,7 @@ const onPageChange = async (page: number) => {
 
 // 跳转到题目详情页
 const toDescription = (record: Problem) => {
-  router.push({
-    path: "/problem/description",
-    query: {
-      id: record.id,
-    },
-  });
+  return `/problem/description?id=${record.id}`;
 };
 </script>
 
