@@ -97,7 +97,7 @@ const columns = [
     title: "Difficulty",
     dataIndex: "difficulty",
     sortable: {
-      sortDirections: ['ascend', 'descend'],
+      sortDirections: ["ascend", "descend"],
     },
   },
   {
