@@ -148,7 +148,7 @@ const columns = [
     title: "Optional",
     slotName: "optional",
   },
-];
+] as any[];
 
 // 点击删除按钮，触发二次确认删除题目对话框
 const clickDelete = async () => {

@@ -8,20 +8,26 @@
           style="width: 200px"
         />
       </a-form-item>
+      <!--      todo 根据难度选择显示的文本颜色要和选项中相同-->
       <a-form-item field="difficulty" label="Difficulty">
         <a-select
           v-model="searchParams.difficulty"
           placeholder="please select difficulty"
           style="width: 200px"
-        />
+          allow-clear
+        >
+          <a-option style="color: limegreen" :value="0">Easy</a-option>
+          <a-option style="color: orange" :value="1">Medium</a-option>
+          <a-option style="color: red" :value="2">Hard</a-option>
+        </a-select>
       </a-form-item>
       <a-form-item field="tags" label="Tags">
         <a-select
           v-model="searchParams.tags"
           placeholder="please select tags"
-          :options="{ candidateTags }"
+          :options="candidateTags"
           multiple
-          max-tag-count="1"
+          :max-tag-count="1"
           style="width: 200px"
         />
       </a-form-item>
@@ -76,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref, UnwrapRef, watchEffect } from "vue";
 import { ProblemControllerService } from "../../../generated";
 import { Problem } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
@@ -86,7 +92,7 @@ import {
   IconCheckCircle,
   IconQuestionCircle,
 } from "@arco-design/web-vue/es/icon";
-import { candidateTags } from "@/constant/CandidateTags";
+// import { candidateTags } from "@/constant/CandidateTags";
 
 // const show = ref(true);
 
@@ -188,7 +194,7 @@ const columns = [
       sortDirections: ["ascend", "descend"],
     },
   },
-];
+] as any[];
 
 const router = useRouter();
 
@@ -210,41 +216,41 @@ const toDescription = (record: Problem) => {
   return `/problem/description?id=${record.id}`;
 };
 
-// const candidateTags = [
-//   { label: "Array", value: "Array" },
-//   { label: "String", value: "String" },
-//   { label: "Math", value: "Math" },
-//   { label: "Tree", value: "Tree" },
-//   { label: "Graph", value: "Graph" },
-//   { label: "Dynamic Programming", value: "Dynamic Programming" },
-//   { label: "Backtracking", value: "Backtracking" },
-//   { label: "Design", value: "Design" },
-//   { label: "Bit Manipulation", value: "Bit Manipulation" },
-//   { label: "Greedy", value: "Greedy" },
-//   { label: "Depth-first Search", value: "Depth-first Search" },
-//   { label: "Breadth-first Search", value: "Breadth-first Search" },
-//   { label: "Binary Search", value: "Binary Search" },
-//   { label: "Two Pointers", value: "Two Pointers" },
-//   { label: "Sort", value: "Sort" },
-//   { label: "Heap", value: "Heap" },
-//   { label: "Hash Table", value: "Hash Table" },
-//   { label: "Stack", value: "Stack" },
-//   { label: "Queue", value: "Queue" },
-//   { label: "Linked List", value: "Linked List" },
-//   { label: "Union Find", value: "Union Find" },
-//   { label: "Trie", value: "Trie" },
-//   { label: "Binary Indexed Tree", value: "Binary Indexed Tree" },
-//   { label: "Segment Tree", value: "Segment Tree" },
-//   { label: "Binary Search Tree", value: "Binary Search Tree" },
-//   { label: "Recursion", value: "Recursion" },
-//   { label: "Divide and Conquer", value: "Divide and Conquer" },
-//   { label: "Sliding Window", value: "Sliding Window" },
-//   { label: "Topological Sort", value: "Topological Sort" },
-//   { label: "Random", value: "Random" },
-//   { label: "Geometry", value: "Geometry" },
-//   { label: "Map", value: "Map" },
-//   { label: "Set", value: "Set" },
-// ];
+const candidateTags = [
+  { label: "Array", value: "Array" },
+  { label: "String", value: "String" },
+  { label: "Math", value: "Math" },
+  { label: "Tree", value: "Tree" },
+  { label: "Graph", value: "Graph" },
+  { label: "Dynamic Programming", value: "Dynamic Programming" },
+  { label: "Backtracking", value: "Backtracking" },
+  { label: "Design", value: "Design" },
+  { label: "Bit Manipulation", value: "Bit Manipulation" },
+  { label: "Greedy", value: "Greedy" },
+  { label: "Depth-first Search", value: "Depth-first Search" },
+  { label: "Breadth-first Search", value: "Breadth-first Search" },
+  { label: "Binary Search", value: "Binary Search" },
+  { label: "Two Pointers", value: "Two Pointers" },
+  { label: "Sort", value: "Sort" },
+  { label: "Heap", value: "Heap" },
+  { label: "Hash Table", value: "Hash Table" },
+  { label: "Stack", value: "Stack" },
+  { label: "Queue", value: "Queue" },
+  { label: "Linked List", value: "Linked List" },
+  { label: "Union Find", value: "Union Find" },
+  { label: "Trie", value: "Trie" },
+  { label: "Binary Indexed Tree", value: "Binary Indexed Tree" },
+  { label: "Segment Tree", value: "Segment Tree" },
+  { label: "Binary Search Tree", value: "Binary Search Tree" },
+  { label: "Recursion", value: "Recursion" },
+  { label: "Divide and Conquer", value: "Divide and Conquer" },
+  { label: "Sliding Window", value: "Sliding Window" },
+  { label: "Topological Sort", value: "Topological Sort" },
+  { label: "Random", value: "Random" },
+  { label: "Geometry", value: "Geometry" },
+  { label: "Map", value: "Map" },
+  { label: "Set", value: "Set" },
+];
 </script>
 
 <style scoped></style>
