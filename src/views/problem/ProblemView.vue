@@ -1,5 +1,5 @@
 <template>
-  <div id="manageProblemView">
+  <div id="ProblemView">
     <a-form :model="searchParams" layout="inline">
       <a-form-item field="Title" label="Title">
         <a-input
@@ -35,10 +35,18 @@
           v-model="searchParams.tags"
           placeholder="please select tags"
           :options="candidateTags"
-          multiple
           :max-tag-count="1"
-          style="width: 200px"
+          multiple
+          style="width: 200px; color: deepskyblue"
         />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" @click="doSearch" style="width: 80px">
+          Search
+        </a-button>
+        <a-button type="dashed" @click="doClear" style="width: 80px">
+          Clear
+        </a-button>
       </a-form-item>
     </a-form>
     <a-table
@@ -91,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, UnwrapRef, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { ProblemControllerService } from "../../../generated";
 import { Problem } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
@@ -111,7 +119,7 @@ const total = ref(0);
 
 // 查询参数，pageSize: 每页显示条数，current: 当前页码
 const searchParams = ref({
-  pageSize: 10,
+  pageSize: 2,
   current: 1,
   title: "",
   difficulty: undefined,
@@ -196,7 +204,7 @@ const columns = [
   //   dataIndex: "favourNum",
   // },
   {
-    title: "CreateTime",
+    title: "Created Time",
     slotName: "createTime",
     dataIndex: "createTime",
     sortable: {
@@ -222,9 +230,30 @@ const onPageChange = async (page: number) => {
 
 // 跳转到题目详情页
 const toDescription = (record: Problem) => {
-  return `/problem/description?id=${record.id}`;
+  return `/problem/description/${record.id}`;
 };
 
+// 搜索
+const doSearch = async () => {
+  searchParams.value = {
+    ...searchParams.value,
+    current: 1,
+  };
+};
+
+// 清空搜索条件
+const doClear = async () => {
+  searchParams.value = {
+    pageSize: 2,
+    current: 1,
+    title: "",
+    difficulty: undefined,
+    tags: [],
+    index: undefined,
+  };
+};
+
+// 候选标签
 const candidateTags = [
   { label: "Array", value: "Array" },
   { label: "String", value: "String" },
@@ -262,4 +291,9 @@ const candidateTags = [
 ];
 </script>
 
-<style scoped></style>
+<style scoped>
+#ProblemView {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+</style>

@@ -8,6 +8,7 @@ import AddProblemView from "@/views/problem/AddProblemView.vue";
 import ManageProblemView from "@/views/problem/ManageProblemView.vue";
 import ProblemView from "@/views/problem/ProblemView.vue";
 import AboutView from "@/views/AboutView.vue";
+import ProblemDescriptionView from "@/views/problem/ProblemDescriptionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -53,6 +54,17 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       access: ROLE_ENUM.NOT_LOGIN,
     },
+    children: [
+      {
+        path: "/description/:id",
+        name: "Problem Description",
+        component: ProblemDescriptionView,
+        props: true,
+        meta: {
+          access: ROLE_ENUM.USER,
+        },
+      },
+    ],
   },
   {
     path: "/no-auth",
