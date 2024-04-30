@@ -8,12 +8,21 @@
           style="width: 200px"
         />
       </a-form-item>
-      <!--      todo 根据难度选择显示的文本颜色要和选项中相同-->
       <a-form-item field="difficulty" label="Difficulty">
         <a-select
           v-model="searchParams.difficulty"
           placeholder="please select difficulty"
-          style="width: 200px"
+          :style="{
+            width: '200px',
+            color:
+              searchParams.difficulty === 0
+                ? 'limegreen'
+                : searchParams.difficulty === 1
+                ? 'orange'
+                : searchParams.difficulty === 2
+                ? 'red'
+                : 'black',
+          }"
           allow-clear
         >
           <a-option style="color: limegreen" :value="0">Easy</a-option>
