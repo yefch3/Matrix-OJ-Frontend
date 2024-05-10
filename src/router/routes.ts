@@ -54,17 +54,28 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       access: ROLE_ENUM.NOT_LOGIN,
     },
-    children: [
-      {
-        path: "/description/:id",
-        name: "Problem Description",
-        component: ProblemDescriptionView,
-        props: true,
-        meta: {
-          access: ROLE_ENUM.USER,
-        },
-      },
-    ],
+    // children: [
+    //   {
+    //     path: "/description/:id",
+    //     name: "Problem Description",
+    //     component: ProblemDescriptionView,
+    //     props: true,
+    //     meta: {
+    //       access: ROLE_ENUM.USER,
+    //     },
+    //   },
+    // ],
+  },
+  //todo 问题描述页面，应该是位于问题页面的子页面，但是这样会导致权限控制失效，暂时先这样
+  {
+    path: "/problem/description/:id",
+    name: "Problem Description",
+    component: ProblemDescriptionView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+      access: ROLE_ENUM.USER,
+    },
   },
   {
     path: "/no-auth",
