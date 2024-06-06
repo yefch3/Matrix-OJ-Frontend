@@ -63,7 +63,7 @@
     >
       <template #title="{ record }">
         <a-space>
-          <a-link :hoverable="false" :href="toDescription(record)">
+          <a-link :href="toDescription(record)" style="color: white">
             {{ record.title }}
           </a-link>
         </a-space>

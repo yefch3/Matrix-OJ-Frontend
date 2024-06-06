@@ -5,7 +5,9 @@
         <a-card>
           <a-tabs default-active-key="description" size="mini">
             <a-tab-pane key="description">
-              <template #title> <icon-bookmark /> Description </template>
+              <template #title>
+                <icon-bookmark style="color: dodgerblue" /> Description
+              </template>
               <a-card v-if="problem">
                 <h1>{{ problem.id }}. {{ problem.title }}</h1>
                 <a-space>
@@ -39,24 +41,34 @@
               </a-card>
             </a-tab-pane>
             <a-tab-pane key="solution">
-              <template #title> <icon-bg-colors /> Solution </template>
+              <template #title>
+                <icon-bg-colors style="color: dodgerblue" /> Solution
+              </template>
               "No solution yet."
             </a-tab-pane>
             <a-tab-pane key="submission">
-              <template #title> <icon-record /> Submission </template>
+              <template #title>
+                <icon-record style="color: dodgerblue" /> Submission
+              </template>
               <!--              todo: submission records, test cases-->
               Content of Tab Panel 3
             </a-tab-pane>
             <a-tab-pane key="test case">
-              <template #title> <icon-check-square /> Test Case </template>
+              <template #title>
+                <icon-check-square style="color: limegreen" /> Test Case
+              </template>
               "No test case yet.
             </a-tab-pane>
             <a-tab-pane key="test result">
-              <template #title> <icon-right /> Test Result </template>
+              <template #title>
+                <icon-right style="color: limegreen" /> Test Result
+              </template>
               "No test result yet."
             </a-tab-pane>
             <a-tab-pane key="discussion">
-              <template #title> <icon-message /> Discussion </template>
+              <template #title>
+                <icon-message style="color: limegreen" /> Discussion
+              </template>
               "No discussion yet."
             </a-tab-pane>
           </a-tabs>
@@ -64,12 +76,18 @@
       </a-col>
       <a-col :md="12" :xs="24">
         <a-card>
-          <a-tabs default-active-key="code" size="mini">
-            <a-tab-pane key="code">
-              <template #title> <icon-code /> Code </template>
-              <CodeEditor />
-            </a-tab-pane>
-          </a-tabs>
+          <a-dropdown @select="selectLanguage">
+            <a-button>
+              <IconCode style="color: limegreen" /> &nbsp; {{ language }} &nbsp;
+              <icon-down />
+            </a-button>
+            <template #content>
+              <a-doption>C++</a-doption>
+              <a-doption>Python</a-doption>
+              <a-doption>Java</a-doption>
+            </template>
+          </a-dropdown>
+          <code-editor />
         </a-card>
       </a-col>
     </a-row>
@@ -94,6 +112,7 @@ import {
   IconRight,
   IconMessage,
   IconCode,
+  IconDown,
 } from "@arco-design/web-vue/es/icon";
 
 interface Props {
@@ -115,6 +134,12 @@ const loadData = async () => {
   } else {
     message.error("Failed to load data. " + res.message);
   }
+};
+
+const language = ref("C++");
+
+const selectLanguage = (e: any) => {
+  language.value = e;
 };
 
 onMounted(() => {
