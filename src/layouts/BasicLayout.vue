@@ -7,24 +7,24 @@
       <a-layout-content class="content">
         <router-view />
       </a-layout-content>
-      <a-layout-footer class="footer">
-        <a href="https://www.linkedin.com/in/fangchen-ye" target="_blank">
-          Online Judge System by Fangchen
-        </a>
-      </a-layout-footer>
+      <!--      <a-layout-footer class="footer">-->
+      <!--        <a href="https://www.linkedin.com/in/fangchen-ye" target="_blank">-->
+      <!--          Online Judge System by Fangchen-->
+      <!--        </a>-->
+      <!--      </a-layout-footer>-->
     </a-layout>
   </div>
 </template>
 
 <style scoped>
 #basicLayout {
+  background-color: #232324;
 }
 
 #basicLayout .header {
 }
 
 #basicLayout .content {
-  background: linear-gradient(to bottom, #aaa, #fff);
   padding: 20px;
   margin-bottom: 16px;
 }

@@ -57,6 +57,6 @@ onMounted(() => {
 <style scoped>
 #code-editor {
   width: 100%;
-  height: 100px;
+  height: 720px;
 }
 </style>

@@ -23,6 +23,11 @@ const doInit = () => {
   console.log("Hello, Vue3!");
 };
 
+// 获取 body 元素
+const body = document.querySelector("body");
+// 修改 arco-theme 属性值
+body?.setAttribute("arco-theme", "dark");
+
 const route = useRoute();
 
 onMounted(() => {

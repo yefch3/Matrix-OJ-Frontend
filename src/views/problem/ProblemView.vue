@@ -119,7 +119,7 @@ const total = ref(0);
 
 // 查询参数，pageSize: 每页显示条数，current: 当前页码
 const searchParams = ref({
-  pageSize: 2,
+  pageSize: 10,
   current: 1,
   title: "",
   difficulty: undefined,
@@ -244,7 +244,7 @@ const doSearch = async () => {
 // 清空搜索条件
 const doClear = async () => {
   searchParams.value = {
-    pageSize: 2,
+    pageSize: 10,
     current: 1,
     title: "",
     difficulty: undefined,

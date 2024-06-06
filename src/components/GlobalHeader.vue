@@ -33,14 +33,11 @@
     <!--    todo login and logout handle-->
     <a-col flex="100px">
       <a-dropdown @submit="handleLogout">
-        <a-button style="background: white" @click="handleLogin">{{
+        <a-button @click="handleLogin" style="background-color: #232324">{{
           loginUser?.userName ?? "Sign in"
         }}</a-button>
         <template #content>
-          <a-button
-            @click="handleLogout"
-            style="background: white"
-            v-if="loginUser?.userName !== null"
+          <a-button @click="handleLogout" v-if="loginUser?.userName !== null"
             >Log out</a-button
           >
         </template>
@@ -101,7 +98,6 @@ const handleLogin = () => {
 }
 
 .title {
-  color: #444;
   margin-left: 16px;
   margin-right: 16px;
   text-align: center;
