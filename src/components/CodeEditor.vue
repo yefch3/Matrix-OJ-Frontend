@@ -1,52 +1,61 @@
 <template>
-  <div id="code-editor" ref="codeEditorRef" style="height: 81vh" />
+  <div id="code-editor" ref="codeEditorRef" style="height: 81vh; width: 100%" />
 </template>
 
 <script setup lang="ts">
 import * as monaco from "monaco-editor";
-import { ref, onMounted, toRaw, withDefaults, defineProps } from "vue";
+import { ref, onMounted, toRaw, withDefaults, defineProps, watch } from "vue";
 
+// todo: value后面需要初始化默认值
 interface Props {
+  language: string;
   value: string;
-  // automaticLayout: boolean;
-  // language: string;
-  // theme: string;
-  // readOnly: boolean;
   handleChange: (v: string) => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
+  language: () => "cpp",
   // language: "cpp",
   // theme: "vs-dark",
   // readOnly: false,
   // automaticLayout: true,
   // // eslint-disable-next-line @typescript-eslint/no-empty-function
-  handleChange: (v: string) => {
-    console.log(v);
-  },
+  handleChange: Function,
 });
 // Hover on each property to see its docs!
 const codeEditorRef = ref();
 const codeEditor = ref();
+
+watch(
+  () => props.language,
+  () => {
+    if (codeEditor.value) {
+      monaco.editor.setModelLanguage(
+        toRaw(codeEditor.value).getModel(),
+        props.language
+      );
+    }
+  }
+);
 
 onMounted(() => {
   if (!codeEditorRef.value) {
     return;
   }
   codeEditor.value = monaco.editor.create(codeEditorRef.value, {
-    value: "",
-    language: "cpp",
-    // value: props.value,
-    // language: props.language,
-    // automaticLayout: props.automaticLayout,
+    value: props.value,
+    language: props.language,
     theme: "vs-dark",
-    // readOnly: props.readOnly,
     lineNumbers: "on",
     fontSize: 13,
+    // readOnly: props.readOnly,
     // minimap: {
     //   enabled: true,
     // },
+    // value: props.value,
+    // language: props.language,
+    // automaticLayout: props.automaticLayout,
   });
 
   codeEditor.value.onDidChangeModelContent(() => {

@@ -77,25 +77,36 @@
       </a-col>
       <a-col :md="12" :xs="24">
         <a-card>
-          <a-dropdown @select="selectLanguage" class="rounded-dropdown">
-            <a-button style="margin-right: 1px">
-              <IconCode style="color: limegreen" /> &nbsp; {{ language }} &nbsp;
+          <a-dropdown @select="selectLanguage">
+            <a-button style="margin-right: 1px; margin-bottom: 2px">
+              <IconCode style="color: limegreen" /> &nbsp;
+              {{ form.language }} &nbsp;
               <icon-down />
             </a-button>
             <template #content>
-              <a-doption>C++</a-doption>
-              <a-doption>Python</a-doption>
-              <a-doption>Java</a-doption>
+              <a-doption>cpp</a-doption>
+              <a-doption>python</a-doption>
+              <a-doption>java</a-doption>
             </template>
           </a-dropdown>
-          <a-button style="margin-right: 1px">
+          <a-button
+            style="margin-right: 1px; margin-bottom: 2px"
+            @click="doRun"
+          >
             <IconCaretRight /> &nbsp; Run
           </a-button>
-          <a-button style="color: limegreen">
+          <a-button
+            style="color: limegreen; margin-bottom: 2px"
+            @click="doSubmit"
+          >
             <icon-upload /> &nbsp; Submit
           </a-button>
           <!--          todo: 增加自定义编辑器设置的功能-->
-          <code-editor />
+          <code-editor
+            :value="form.code as string"
+            :language="form.language"
+            :handle-change="changeCode"
+          />
         </a-card>
       </a-col>
     </a-row>
@@ -107,6 +118,7 @@ import { ref, withDefaults, defineProps, onMounted } from "vue";
 import {
   Problem,
   ProblemControllerService,
+  ProblemSubmitAddRequest,
   ProblemVO,
 } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
@@ -124,6 +136,7 @@ import {
   IconCaretRight,
   IconUpload,
 } from "@arco-design/web-vue/es/icon";
+import { ProblemSubmitControllerService } from "../../../generated";
 
 interface Props {
   id: string;
@@ -146,24 +159,43 @@ const loadData = async () => {
   }
 };
 
-const language = ref("C++");
+const form = ref<ProblemSubmitAddRequest>({
+  problemId: props.id as any,
+  language: "cpp",
+  code: "",
+});
 
 const selectLanguage = (e: any) => {
-  language.value = e;
+  form.value.language = e;
+  // console.log(form.value.language);
 };
 
 onMounted(() => {
   loadData();
 });
+
+// todo: 实现运行测试功能，需要在后端实现API
+const doRun = () => {
+  console.log("Run");
+};
+
+const changeCode = (v: string) => {
+  form.value.code = v;
+};
+
+const doSubmit = async () => {
+  const res = await ProblemSubmitControllerService.doProblemSubmitUsingPost(
+    form.value
+  );
+  if (res.code === 0) {
+    message.success("Submit successfully.");
+  } else {
+    message.error("Failed to submit. " + res.message);
+  }
+};
 </script>
 
 <style scoped>
 #problemDescriptionView {
-}
-
-.rounded-dropdown {
-  border-radius: 10px; /* 你可以根据需要调整圆角的大小 */
-  padding: 5px;
-  border: 1px solid #ccc;
 }
 </style>
