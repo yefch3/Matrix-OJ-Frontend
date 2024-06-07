@@ -1,5 +1,5 @@
 <template>
-  <div id="code-editor" ref="codeEditorRef" />
+  <div id="code-editor" ref="codeEditorRef" style="height: 81vh" />
 </template>
 
 <script setup lang="ts">
@@ -43,6 +43,7 @@ onMounted(() => {
     theme: "vs-dark",
     // readOnly: props.readOnly,
     lineNumbers: "on",
+    fontSize: 13,
     // minimap: {
     //   enabled: true,
     // },

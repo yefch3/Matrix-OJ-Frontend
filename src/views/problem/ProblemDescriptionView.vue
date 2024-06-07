@@ -1,5 +1,6 @@
 <template>
   <div id="problemDescriptionView">
+    <!--    todo: 把左边的题目详情改成可以单独滚动的样式-->
     <a-row :gutter="[24, 24]">
       <a-col :md="12" :xs="24">
         <a-card>
@@ -76,8 +77,8 @@
       </a-col>
       <a-col :md="12" :xs="24">
         <a-card>
-          <a-dropdown @select="selectLanguage">
-            <a-button>
+          <a-dropdown @select="selectLanguage" class="rounded-dropdown">
+            <a-button style="margin-right: 1px">
               <IconCode style="color: limegreen" /> &nbsp; {{ language }} &nbsp;
               <icon-down />
             </a-button>
@@ -87,6 +88,13 @@
               <a-doption>Java</a-doption>
             </template>
           </a-dropdown>
+          <a-button style="margin-right: 1px">
+            <IconCaretRight /> &nbsp; Run
+          </a-button>
+          <a-button style="color: limegreen">
+            <icon-upload /> &nbsp; Submit
+          </a-button>
+          <!--          todo: 增加自定义编辑器设置的功能-->
           <code-editor />
         </a-card>
       </a-col>
@@ -113,6 +121,8 @@ import {
   IconMessage,
   IconCode,
   IconDown,
+  IconCaretRight,
+  IconUpload,
 } from "@arco-design/web-vue/es/icon";
 
 interface Props {
@@ -149,5 +159,11 @@ onMounted(() => {
 
 <style scoped>
 #problemDescriptionView {
+}
+
+.rounded-dropdown {
+  border-radius: 10px; /* 你可以根据需要调整圆角的大小 */
+  padding: 5px;
+  border: 1px solid #ccc;
 }
 </style>

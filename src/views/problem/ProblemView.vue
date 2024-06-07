@@ -91,8 +91,8 @@
       </template>
       <!--      todo: 状态图标，当未登录时不显示，当用户登陆后，将已经accept的题目标记打勾图标，将submit但未accept的题目标记尝试中，将未做的题目标记为空白-->
       <template #status>
-        <icon-check-circle />
-        <icon-question-circle />
+        <icon-check-circle style="color: limegreen" />
+        <icon-question-circle style="color: orange" />
       </template>
     </a-table>
   </div>

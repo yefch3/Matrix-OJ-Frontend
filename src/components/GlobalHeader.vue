@@ -5,6 +5,7 @@
         mode="horizontal"
         :selected-keys="selectedKeys"
         @menu-item-click="doMenuClick"
+        style="margin-top: 16px; height: 5vh"
       >
         <a-menu-item
           key="0"
@@ -31,7 +32,7 @@
       </a-menu>
     </a-col>
     <!--    todo login and logout handle-->
-    <a-col flex="100px">
+    <a-col flex="100px" style="margin-top: 16px">
       <a-dropdown @submit="handleLogout">
         <a-button @click="handleLogin" style="background-color: #232324">{{
           loginUser?.userName ?? "Sign in"
