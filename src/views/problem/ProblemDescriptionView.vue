@@ -104,7 +104,7 @@
           <!--          todo: 增加自定义编辑器设置的功能-->
           <code-editor
             :value="form.code as string"
-            :language="form.language"
+            :language="form.language as string"
             :handle-change="changeCode"
           />
         </a-card>
