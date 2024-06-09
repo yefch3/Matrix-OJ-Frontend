@@ -106,6 +106,7 @@
             :value="form.code as string"
             :language="form.language as string"
             :handle-change="changeCode"
+            :handle-language-change="selectLanguage"
           />
         </a-card>
       </a-col>
@@ -114,7 +115,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, withDefaults, defineProps, onMounted } from "vue";
+import {
+  ref,
+  withDefaults,
+  defineProps,
+  onMounted,
+  watch,
+  computed,
+} from "vue";
 import {
   Problem,
   ProblemControllerService,
@@ -137,6 +145,7 @@ import {
   IconUpload,
 } from "@arco-design/web-vue/es/icon";
 import { ProblemSubmitControllerService } from "../../../generated";
+import { useStore } from "vuex";
 
 interface Props {
   id: string;
@@ -147,8 +156,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const problem = ref<ProblemVO>();
+// 获取用户id
+const store = useStore();
+const userId = store.state.user.loginUser?.id;
 
 const loadData = async () => {
+  // console.log(userId);
   const res = await ProblemControllerService.getProblemVoByIdUsingGet(
     props.id as any
   );
@@ -161,13 +174,16 @@ const loadData = async () => {
 
 const form = ref<ProblemSubmitAddRequest>({
   problemId: props.id as any,
-  language: "cpp",
-  code: "",
+  language: localStorage.getItem("language" + userId + props.id) || "cpp",
+  code: localStorage.getItem("code" + userId + props.id) || "",
 });
 
+// todo: 目前来说，语言和代码都是存储在localStorage中的，后面我认为应该优先获取用户的提交记录，
+//  然后显示上次提交的代码和语言；如果未提交过，则显示默认的代码和语言，但是如果用户改变了代码和语言但是未提交，那么应该保存用户的选择。
+// 可以这么做：在用户选择语言和修改代码的时候，就保存到localStorage中，然后在用户提交的时候，再保存到后端，并且在用户提交成功后，清空localStorage中的数据。
 const selectLanguage = (e: any) => {
   form.value.language = e;
-  // console.log(form.value.language);
+  localStorage.setItem("language" + userId + form.value.problemId, e);
 };
 
 onMounted(() => {
@@ -181,6 +197,7 @@ const doRun = () => {
 
 const changeCode = (v: string) => {
   form.value.code = v;
+  localStorage.setItem("code" + userId + form.value.problemId, v);
 };
 
 const doSubmit = async () => {

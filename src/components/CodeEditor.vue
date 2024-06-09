@@ -11,18 +11,16 @@ interface Props {
   language: string;
   value: string;
   handleChange: (v: string) => void;
+  handleLanguageChange: (v: string) => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
   language: () => "cpp",
-  // language: "cpp",
-  // theme: "vs-dark",
-  // readOnly: false,
-  // automaticLayout: true,
-  // // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleChange: Function,
+  handleLanguageChange: Function,
 });
+
 // Hover on each property to see its docs!
 const codeEditorRef = ref();
 const codeEditor = ref();
@@ -35,6 +33,7 @@ watch(
         toRaw(codeEditor.value).getModel(),
         props.language
       );
+      props.handleLanguageChange(props.language);
     }
   }
 );
@@ -49,18 +48,19 @@ onMounted(() => {
     theme: "vs-dark",
     lineNumbers: "on",
     fontSize: 13,
-    // readOnly: props.readOnly,
-    // minimap: {
-    //   enabled: true,
-    // },
-    // value: props.value,
-    // language: props.language,
-    // automaticLayout: props.automaticLayout,
   });
 
   codeEditor.value.onDidChangeModelContent(() => {
-    props.handleChange(toRaw(codeEditor.value).getValue());
+    const content = toRaw(codeEditor.value).getValue();
+    props.handleChange(content);
   });
+
+  // codeEditor.value.onDidChangeModelLanguage(() => {
+  //   const language = toRaw(codeEditor.value).getModel();
+  //   console.log(language);
+  //   localStorage.setItem("language", language);
+  //   props.handleLanguageChange(language);
+  // });
 });
 </script>
 
